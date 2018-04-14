@@ -1,0 +1,26 @@
+{
+  "name": "ethereum-course-kickstart",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Betisman/ethereum-course-kickstart.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Betisman/ethereum-course-kickstart/issues"
+  },
+  "homepage": "https://github.com/Betisman/ethereum-course-kickstart#readme",
+  "dependencies": {
+    "fs-extra": "^5.0.0",
+    "ganache-cli": "^6.1.0",
+    "mocha": "^5.1.0",
+    "solc": "^0.4.21",
+    "web3": "^1.0.0-beta.26"
+  }
+}
