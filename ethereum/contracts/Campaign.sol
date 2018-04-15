@@ -19,7 +19,7 @@ contract Campaign {
         uint value;
         address recipient;
         bool complete;
-        uint approvalCount;
+        uint approversCount;
         mapping(address => bool) approvals;
     }
     
@@ -27,7 +27,7 @@ contract Campaign {
     address public manager;
     uint public minimumContribution;
     mapping(address => bool) public approvers;
-    uint public approvalCount;
+    uint public approversCount;
     
     modifier restricted() {
         require(msg.sender == manager);
@@ -42,7 +42,7 @@ contract Campaign {
     function contribute() public payable {
         require(msg.value > minimumContribution);
         approvers[msg.sender] = true;
-        approvalCount++;
+        approversCount++;
     }
     
     function createRequest(string description, uint value, address recipient) public restricted {
@@ -51,7 +51,7 @@ contract Campaign {
             value: value,
             recipient: recipient,
             complete: false,
-            approvalCount: 0
+            approversCount: 0
         });
         
         requests.push(newRequest);
@@ -64,17 +64,31 @@ contract Campaign {
         require(!request.approvals[msg.sender]);
         
         request.approvals[msg.sender] = true;
-        request.approvalCount++;
+        request.approversCount++;
     }
     
     function finalizeRequest(uint index) public restricted {
         Request storage request = requests[index];
         
-        require(request.approvalCount > (approvalCount / 2));
+        require(request.approversCount > (approversCount / 2));
         require(!request.complete);
         
         request.recipient.transfer(request.value);
         request.complete = true;
+    }
+
+    function getSummary() public view returns (uint, uint, uint, uint, address) {
+        return (
+            minimumContribution,
+            this.balance,
+            requests.length,
+            approversCount,
+            manager
+        );
+    }
+
+    function getRequestCount() public view returns (uint) {
+        return requests.length;
     }
     
 }
